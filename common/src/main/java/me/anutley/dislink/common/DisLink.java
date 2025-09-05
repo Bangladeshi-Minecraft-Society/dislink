@@ -44,10 +44,16 @@ public class DisLink {
     private final ConfigLoader configLoader;
     private final JDA jda;
     private final SettingsUtil settingsUtil;
+    private final Object foliaLib;
 
     public DisLink(DisLinkLogger logger, File dataFolder) {
+        this(logger, dataFolder, null);
+    }
+
+    public DisLink(DisLinkLogger logger, File dataFolder, Object foliaLib) {
         this.logger = logger;
         this.dataFolder = dataFolder;
+        this.foliaLib = foliaLib;
 
         this.configLoader = new ConfigLoader(this);
 
@@ -91,8 +97,22 @@ public class DisLink {
         return settingsUtil;
     }
 
+    public Object foliaLib() {
+        return foliaLib;
+    }
+
     public void debug(String message) {
         if (configManager.mainConfig().debug()) logger.debug(message);
+    }
+
+    public void shutdown() {
+        if (jda != null) {
+            jda.shutdown();
+        }
+    }
+
+    public boolean isFoliaCompatible() {
+        return foliaLib != null;
     }
 
 }

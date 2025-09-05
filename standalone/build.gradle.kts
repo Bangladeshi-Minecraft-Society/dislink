@@ -10,3 +10,7 @@ dependencies {
     implementation(project(":common"))
     implementation("ch.qos.logback:logback-classic:1.4.6")
 }
+
+java {
+    toolchain.languageVersion.set(JavaLanguageVersion.of(17))
+}

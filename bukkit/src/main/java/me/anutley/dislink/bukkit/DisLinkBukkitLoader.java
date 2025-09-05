@@ -24,15 +24,53 @@
 
 package me.anutley.dislink.bukkit;
 
+import com.tcoded.folialib.FoliaLib;
 import me.anutley.dislink.common.DisLink;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class DisLinkBukkitLoader extends JavaPlugin {
+
+    private FoliaLib foliaLib;
+    private DisLink disLink;
+
     @Override
     public void onEnable() {
-        new DisLink(
+        // Initialize FoliaLib
+        this.foliaLib = new FoliaLib(this);
+
+        // Log the platform we're running on for debugging
+        getLogger().info("DisLink is running on: " + getPlatformName());
+
+        // Initialize the main DisLink instance
+        this.disLink = new DisLink(
                 new DisLinkBukkitLogger(getLogger()),
-                getDataFolder()
+                getDataFolder(),
+                foliaLib
         );
+    }
+
+    private String getPlatformName() {
+        if (foliaLib.isFolia()) {
+            return "Folia (Multi-threaded)";
+        } else if (foliaLib.isPaper()) {
+            return "Paper";
+        } else if (foliaLib.isSpigot()) {
+            return "Spigot";
+        } else {
+            return "Unknown Bukkit-based server";
+        }
+    }
+
+    @Override
+    public void onDisable() {
+        // Cancel all tasks associated with FoliaLib when the plugin disables
+        if (foliaLib != null) {
+            foliaLib.getScheduler().cancelAllTasks();
+        }
+
+        // Shutdown DisLink
+        if (disLink != null) {
+            disLink.shutdown();
+        }
     }
 }

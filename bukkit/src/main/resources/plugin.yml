@@ -3,4 +3,6 @@ version: ${version}
 author: ANutley
 website: https://github.com/anutley/dislink
 main: me.anutley.dislink.bukkit.DisLinkBukkitLoader
-api-version: 1.13
+api-version: 1.19
+folia-supported: true
+description: Discord bridge plugin with full Folia compatibility

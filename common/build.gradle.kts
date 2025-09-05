@@ -9,3 +9,7 @@ dependencies {
     // Configuration
     implementation("org.spongepowered:configurate-hocon:4.1.2")
 }
+
+java {
+    toolchain.languageVersion.set(JavaLanguageVersion.of(17))
+}

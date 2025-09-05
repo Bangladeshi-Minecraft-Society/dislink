@@ -34,6 +34,11 @@ subprojects {
 
             archiveFileName.set("DisLink-${archiveBaseName.get().capitalized()}-${archiveVersion.get()}.jar")
 
+            // Relocate FoliaLib to avoid conflicts
+            if (archiveBaseName.get() == "bukkit") {
+                relocate("com.tcoded.folialib", "me.anutley.dislink.lib.folialib")
+            }
+
             val copyJar = register<Copy>("copyJar") {
                 from(archiveFile)
                 destinationDir = rootProject.layout.projectDirectory.dir("./jars/").asFile
